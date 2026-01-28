@@ -128,7 +128,6 @@ AppNavHost (상위 NavController)
 │   ├── search   → SearchScreen
 │   ├── profile  → ProfileScreen
 │   └── settings → SettingsScreen
-└── detail/{id}  → DetailScreen     (바텀네비 ❌)
 ```
 
 ## 사용 방법
