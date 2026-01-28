@@ -122,7 +122,6 @@ API/DB → DataSource → RepositoryImpl → UseCase → ViewModel → UI
 
 ```
 AppNavHost (상위 NavController)
-├── login        → LoginScreen      (바텀네비 ❌)
 ├── main         → MainScreen       (바텀네비 ⭕)
 │   ├── home     → HomeScreen
 │   ├── search   → SearchScreen
