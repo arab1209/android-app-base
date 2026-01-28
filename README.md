@@ -2,15 +2,6 @@
 
 Jetpack Compose + Hilt + Retrofit 기반 클린 아키텍처 베이스 템플릿
 
-## 기술 스택
-
-- **Language:** Kotlin
-- **UI:** Jetpack Compose, Material3
-- **Architecture:** Clean Architecture, MVVM
-- **DI:** Hilt
-- **Network:** Retrofit, OkHttp
-- **Navigation:** Navigation Compose
-
 ## 프로젝트 구조
 
 ```
