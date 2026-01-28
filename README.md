@@ -2,6 +2,15 @@
 
 Jetpack Compose + Hilt + Retrofit 기반 클린 아키텍처 베이스 템플릿
 
+## 기술 스택
+
+- **Language:** Kotlin
+- **UI:** Jetpack Compose, Material3
+- **Architecture:** Clean Architecture, MVVM
+- **DI:** Hilt
+- **Network:** Retrofit, OkHttp
+- **Navigation:** Navigation Compose
+
 ## 프로젝트 구조
 
 ```
@@ -37,7 +46,7 @@ app/src/main/java/com/example/yourapp/
 ## 레이어 설명
 
 ### Domain Layer
-비즈니스 로직을 담당하는 레이어. 다른 레이어에 의존하지 않음
+비즈니스 로직을 담당하는 레이어. 다른 레이어에 의존하지 않음.
 
 | 패키지 | 역할 |
 |--------|------|
@@ -46,7 +55,7 @@ app/src/main/java/com/example/yourapp/
 | `usecase` | 단일 비즈니스 로직 수행 |
 
 ### Data Layer
-데이터 소스와의 통신을 담당하는 레이어
+데이터 소스와의 통신을 담당하는 레이어.
 
 | 패키지 | 역할 |
 |--------|------|
@@ -56,21 +65,44 @@ app/src/main/java/com/example/yourapp/
 | `repository` | Repository 구현체 |
 
 ### Presentation Layer
-UI와 사용자 상호작용을 담당하는 레이어
+UI와 사용자 상호작용을 담당하는 레이어.
 
 | 패키지 | 역할 |
 |--------|------|
 | `navigation` | 화면 이동 관리 |
 | `ui` | Composable 화면, ViewModel |
 
-의존성 방향
+## 의존성 방향
+
+```
+┌─────────────────────────────────────────────────┐
+│                  Presentation                    │
+│               (UI, ViewModel)                    │
+└──────────────────────┬──────────────────────────┘
+                       │ 의존
+                       ↓
+┌─────────────────────────────────────────────────┐
+│                    Domain                        │
+│       (UseCase, Repository 인터페이스, Model)     │
+└──────────────────────┬──────────────────────────┘
+                       ↑ 의존
+┌──────────────────────┴──────────────────────────┐
+│                     Data                         │
+│       (RepositoryImpl, DataSource, API, DB)      │
+└─────────────────────────────────────────────────┘
+```
+
+```
 Presentation → Domain ← Data
+```
 
-Domain: 중심 레이어, 외부 의존 없음 (순수 Kotlin)
-Presentation: Domain을 의존
-Data: Domain을 의존
+- **Domain**: 중심 레이어, 외부 의존 없음 (순수 Kotlin)
+- **Presentation**: Domain을 의존
+- **Data**: Domain을 의존
 
-데이터 흐름
+## 데이터 흐름
+
+```
 [요청]
 UI → ViewModel → UseCase → Repository(Interface) → RepositoryImpl → DataSource → API/DB
 
@@ -78,18 +110,25 @@ UI → ViewModel → UseCase → Repository(Interface) → RepositoryImpl → Da
 API/DB → DataSource → RepositoryImpl → UseCase → ViewModel → UI
               ↓              ↓              ↓           ↓
             (DTO)    (DTO → Entity)    (Entity)    (UiState)
-위치변환DataSourceAPI 호출, DTO 반환RepositoryImplDTO → Domain Model (Entity) 변환ViewModelDomain Model → UiState 변환
 ```
+
+| 위치 | 변환 |
+|------|------|
+| DataSource | API 호출, DTO 반환 |
+| RepositoryImpl | DTO → Domain Model (Entity) 변환 |
+| ViewModel | Domain Model → UiState 변환 |
 
 ## 네비게이션 구조
 
 ```
 AppNavHost (상위 NavController)
+├── login        → LoginScreen      (바텀네비 ❌)
 ├── main         → MainScreen       (바텀네비 ⭕)
 │   ├── home     → HomeScreen
 │   ├── search   → SearchScreen
 │   ├── profile  → ProfileScreen
 │   └── settings → SettingsScreen
+└── detail/{id}  → DetailScreen     (바텀네비 ❌)
 ```
 
 ## 사용 방법
